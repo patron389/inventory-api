@@ -25,6 +25,8 @@ class DashboardService
 
             // Example: low stock threshold = below 5
             'low_stock_items' => Stock::where('quantity', '<', 5)->count(),
+            'stock_per_warehouse' => $this->stockPerWarehouse(),
+            
         ];
     }
 
