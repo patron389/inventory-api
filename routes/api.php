@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\StockController;
 use App\Http\Controllers\Api\TransferController;
 use App\Http\Controllers\Api\StockMovementController;
 use App\Http\Controllers\Api\DashboardController;
+use App\Http\Controllers\Api\RoleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,6 +47,9 @@ Route::middleware('auth:sanctum')->group(function () {
     | User Management
     |--------------------------------------------------------------------------
     */
+
+    Route::get('/roles', [RoleController::class, 'index'])
+        ->middleware('permission:user.view');
 
     Route::delete('/users/{user}', [UserController::class, 'destroy'])
         ->middleware('permission:user.delete');

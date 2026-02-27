@@ -31,12 +31,13 @@ class UserService
         }
 
         // create user
+        $defaultPassword = 'secret123';
         $user = User::create([
             'first_name' => $data['first_name'],
             'last_name'  => $data['last_name'],
             'username'   => $data['username'],
             'email'      => $data['email'],
-            'password'   => Hash::make($data['password']),
+            'password'   => Hash::make($defaultPassword),
         ]);
 
         // assign role
