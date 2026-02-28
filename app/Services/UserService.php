@@ -37,6 +37,7 @@ class UserService
             'last_name'  => $data['last_name'],
             'username'   => $data['username'],
             'email'      => $data['email'],
+            'phone_no'   => $data['phone_no'],
             'password'   => Hash::make($defaultPassword),
         ]);
 
@@ -73,6 +74,7 @@ class UserService
             'last_name'  => $data['last_name'],
             'username'   => $data['username'],
             'email'      => $data['email'],
+            'phone_no'   => $data['phone_no'],
         ]);
 
         // update password only if provided
@@ -80,6 +82,10 @@ class UserService
             $targetUser->update([
                 'password' => Hash::make($data['password'])
             ]);
+        }
+        // ✅ Update role if provided
+        if (!empty($data['role'])) {
+            $targetUser->syncRoles([$data['role']]); // replaces old role
         }
 
         return $targetUser->fresh();

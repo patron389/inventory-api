@@ -44,7 +44,12 @@ class AuthService
                 'message' => 'Invalid username or password'
             ], 401));
         }
-
+        // 🚨 CHECK IF USER IS ACTIVE
+        if (!$user->is_active) {
+            abort(response()->json([
+                'message' => 'Your account is deactivated. Please contact admin.'
+            ], 403));
+        }
         // create new token every login (multiple devices supported)
         $token = $user->createToken('api_token')->plainTextToken;
 

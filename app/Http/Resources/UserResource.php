@@ -20,6 +20,7 @@ class UserResource extends JsonResource
             'last_name'  => $this->last_name,
             'username'   => $this->username,
             'email'      => $this->email,
+            'phone_no'   => $this->phone_no,
             // Return role names as array
             'roles' => $this->getRoleNames(),
 
