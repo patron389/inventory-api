@@ -8,7 +8,7 @@ use App\Services\UserService;
 use App\Http\Requests\User\CreateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Http\Requests\User\UpdateUserRequest;
-
+use Illuminate\Http\Request;
 class UserController extends Controller
 {
     protected UserService $userService;
@@ -40,12 +40,15 @@ class UserController extends Controller
         ], 201);
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $users = $this->userService->getUsers(auth()->user());
+        $users = $this->userService->getUsers(
+            auth()->user(),
+            $request->only(['search', 'status'])
+        );
 
         return UserResource::collection($users);
-    }
+        }
 
     public function update(UpdateUserRequest $request, User $user)
     {

@@ -47,7 +47,7 @@ class UserService
         return $user;
     }
 
-    public function getUsers(User $actingUser): LengthAwarePaginator
+    public function getUsers(User $actingUser, array $filters = []): LengthAwarePaginator
     {
         $query = User::query()->latest();
 
@@ -56,6 +56,30 @@ class UserService
             $query->whereDoesntHave('roles', function ($q) {
                 $q->where('name', 'super_admin');
             });
+        }
+
+        // 🔎 Search filter
+        if (!empty($filters['search'])) {
+            $search = $filters['search'];
+
+            $query->where(function ($q) use ($search) {
+                $q->where('first_name', 'like', "%{$search}%")
+                ->orWhere('last_name', 'like', "%{$search}%")
+                ->orWhere('username', 'like', "%{$search}%")
+                ->orWhere('email', 'like', "%{$search}%");
+            });
+        }
+
+        // 📌 Status filter
+        if (!empty($filters['status'])) {
+
+            if ($filters['status'] === 'active') {
+                $query->where('is_active', true);
+            }
+
+            if ($filters['status'] === 'inactive') {
+                $query->where('is_active', false);
+            }
         }
 
         return $query->paginate(10);
@@ -75,6 +99,7 @@ class UserService
             'username'   => $data['username'],
             'email'      => $data['email'],
             'phone_no'   => $data['phone_no'],
+            'is_active'   => $data['is_active'],
         ]);
 
         // update password only if provided

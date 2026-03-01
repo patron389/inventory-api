@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\ProductResource;
 use App\Http\Requests\Product\StoreProductRequest;
 use App\Http\Requests\Product\UpdateProductRequest;
-
+use Illuminate\Http\Request;
 class ProductController extends Controller
 {
     protected $service;
@@ -18,10 +18,15 @@ class ProductController extends Controller
         $this->service = $service;
     }
 
-    public function index()
+    public function index(Request $request)
     {
+        $filters = $request->only([
+            'search',
+            'status'
+        ]);
+
         return ProductResource::collection(
-            $this->service->getAll()
+            $this->service->getAll($filters)
         );
     }
 

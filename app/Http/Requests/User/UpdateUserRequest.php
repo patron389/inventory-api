@@ -44,6 +44,7 @@ class UpdateUserRequest extends FormRequest
             'phone_no'      => ['required', 'string', 'max:15', 'min:11'],
             'password' => ['nullable', 'string', 'min:6'],
             'role'       => ['required', 'string', 'exists:roles,name'],
+            'is_active' => ['required', 'boolean'],
         ];
     }
 }
