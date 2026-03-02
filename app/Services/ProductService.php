@@ -15,7 +15,11 @@ class ProductService
 
     public function getAll(array $filters = []): LengthAwarePaginator
     {
-        $query = Product::query()->latest();
+        $query = Product::with([
+            'category',
+            'subcategory',
+            'brand'
+        ])->latest();
 
         // 🔎 Search filter
         if (!empty($filters['search'])) {
@@ -26,7 +30,6 @@ class ProductService
                 ->orWhere('sku', 'like', "%{$search}%");
             });
         }
-
 
         // 📌 Status filter
         if (!empty($filters['status'])) {

@@ -32,6 +32,21 @@ class RolePermissionSeeder extends Seeder
             'product.update',
             'product.delete',
 
+            'brand.view',
+            'brand.create',
+            'brand.update',
+            'brand.delete',
+            
+            'category.view',
+            'category.create',
+            'category.update',
+            'category.delete',
+
+            'subcategory.view',
+            'subcategory.create',
+            'subcategory.update',
+            'subcategory.delete',
+
             'stock.view',
             'stock.add',
             'stock.transfer',

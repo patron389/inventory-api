@@ -20,6 +20,9 @@ class ProductController extends Controller
 
     public function index(Request $request)
     {
+        // dd(
+        //     $this->service->getAll([])->items()[0]->relationLoaded('category')
+        // );
         $filters = $request->only([
             'search',
             'status'
@@ -29,7 +32,10 @@ class ProductController extends Controller
             $this->service->getAll($filters)
         );
     }
-
+    // public function index(Request $request)
+    // {
+    //     return $this->service->getAll([]);
+    // }
     public function store(StoreProductRequest $request)
     {
         $product = $this->service->create($request->validated());

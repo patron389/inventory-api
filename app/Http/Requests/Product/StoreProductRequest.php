@@ -23,12 +23,19 @@ class StoreProductRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'sku' => 'required|string|max:100|unique:products,sku',
-            'category' => 'nullable|string|max:255',
-            'unit' => 'nullable|string|max:50',
-            'price' => 'nullable|numeric|min:0',
+            'sku' => 'required|string|max:255|unique:products,sku',
+
+            'category_id' => 'required|exists:categories,id',
+
+            // Optional but must exist if provided
+            'subcategory_id' => 'nullable|exists:subcategories,id',
+
+            'brand_id' => 'required|exists:brands,id',
+
+            'unit' => 'required|string|max:50',
+            'price' => 'required|numeric|min:0',
             'description' => 'nullable|string',
-            'is_active' => 'boolean',
+            'is_active' => 'boolean'
         ];
     }
 }

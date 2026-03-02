@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Product;
+namespace App\Http\Requests\Subcategory;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateProductRequest extends FormRequest
+class StoreSubcategoryRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,16 +22,11 @@ class UpdateProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255',
-            'sku' => 'required|string|max:255|unique:products,sku,' . $this->route('product')->id,
-
             'category_id' => 'required|exists:categories,id',
-            'subcategory_id' => 'nullable|exists:subcategories,id',
-            'brand_id' => 'required|exists:brands,id',
 
-            'unit' => 'required|string|max:50',
-            'price' => 'required|numeric|min:0',
-            'description' => 'nullable|string',
+            // Prevent duplicate name within same category
+            'name' => 'required|string|max:255',
+
             'is_active' => 'boolean'
         ];
     }

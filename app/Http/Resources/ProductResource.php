@@ -12,19 +12,36 @@ class ProductResource extends JsonResource
      *
      * @return array<string, mixed>
      */
-    public function toArray(Request $request): array
+    public function toArray($request): array
     {
         return [
             'id' => $this->id,
             'name' => $this->name,
             'sku' => $this->sku,
-            'category' => $this->category,
             'unit' => $this->unit,
             'price' => $this->price,
             'description' => $this->description,
             'is_active' => $this->is_active,
+
+            'category' => [
+                'id' => $this->category?->id,
+                'name' => $this->category?->name,
+            ],
+
+            'subcategory' => [
+                'id' => $this->subcategory?->id,
+                'name' => $this->subcategory?->name,
+            ],
+
+            'brand' => [
+                'id' => $this->brand?->id,
+                'name' => $this->brand?->name,
+                'image' => $this->brand?->image
+                    ? asset('storage/' . $this->brand->image)
+                    : null,
+            ],
+
             'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
         ];
     }
 }

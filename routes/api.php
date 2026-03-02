@@ -10,7 +10,9 @@ use App\Http\Controllers\Api\TransferController;
 use App\Http\Controllers\Api\StockMovementController;
 use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\RoleController;
-
+use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\SubcategoryController;
+use App\Http\Controllers\Api\BrandController;
 /*
 |--------------------------------------------------------------------------
 | Public Routes (no login required)
@@ -42,11 +44,11 @@ Route::middleware('auth:sanctum')->group(function () {
     // logout current session
     Route::post('/logout', [AuthController::class, 'logout']);
 
-    /*
-    |--------------------------------------------------------------------------
-    | User Management
-    |--------------------------------------------------------------------------
-    */
+/*
+|--------------------------------------------------------------------------
+| User Management
+|--------------------------------------------------------------------------
+*/
 
     Route::get('/roles', [RoleController::class, 'index'])
         ->middleware('permission:user.view');
@@ -63,11 +65,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/users/{user}', [UserController::class, 'update'])
         ->middleware('permission:user.update');
 
-    /*
-    |--------------------------------------------------------------------------
-    | Warehouse Management
-    |--------------------------------------------------------------------------
-    */
+/*
+|--------------------------------------------------------------------------
+| Warehouse Management
+|--------------------------------------------------------------------------
+*/
 
     Route::middleware('permission:warehouse.view')
         ->get('/warehouses', [WarehouseController::class, 'index']);
@@ -81,11 +83,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::middleware('permission:warehouse.delete')
         ->delete('/warehouses/{warehouse}', [WarehouseController::class, 'destroy']);
 
-    /*
-    |--------------------------------------------------------------------------
-    | Product Management
-    |--------------------------------------------------------------------------
-    */
+/*
+|--------------------------------------------------------------------------
+| Product Management
+|--------------------------------------------------------------------------
+*/
 
     Route::middleware('permission:product.view')
         ->get('/products', [ProductController::class, 'index']);
@@ -99,11 +101,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::middleware('permission:product.delete')
         ->delete('/products/{product}', [ProductController::class, 'destroy']);
 
-    /*
-    |--------------------------------------------------------------------------
-    | Stock Management
-    |--------------------------------------------------------------------------
-    */
+/*
+|--------------------------------------------------------------------------
+| Stock Management
+|--------------------------------------------------------------------------
+*/
 
     Route::middleware('permission:stock.add')
         ->post('/stocks/deduct', [StockController::class, 'deduct']);
@@ -115,12 +117,69 @@ Route::middleware('auth:sanctum')->group(function () {
         ->get('/stock-movements', [StockMovementController::class, 'index']);
 
     Route::get('/dashboard/summary', [DashboardController::class, 'summary']);
-    /*
-    |--------------------------------------------------------------------------
-    | Dashboard Summary/Report
-    |--------------------------------------------------------------------------
-    */
+/*
+|--------------------------------------------------------------------------
+| Dashboard Summary/Report
+|--------------------------------------------------------------------------
+*/
     Route::get('/dashboard/summary', [DashboardController::class, 'summary']);
     Route::get('/reports/stock-per-warehouse', [DashboardController::class, 'stockPerWarehouse']);
     Route::get('/reports/low-stock', [DashboardController::class, 'lowStock']);
+
+/*
+|--------------------------------------------------------------------------
+| Category management
+|--------------------------------------------------------------------------
+*/
+
+    Route::middleware(['permission:category.view'])
+        ->get('/categories', [CategoryController::class, 'index']);
+
+    Route::middleware(['permission:category.create'])
+        ->post('/categories', [CategoryController::class, 'store']);
+
+    Route::middleware(['permission:category.update'])
+        ->put('/categories/{category}', [CategoryController::class, 'update']);
+
+    Route::middleware(['permission:category.delete'])
+        ->delete('/categories/{category}', [CategoryController::class, 'destroy']);
+
+/*
+|--------------------------------------------------------------------------
+| Subcategory management
+|--------------------------------------------------------------------------
+*/
+
+    Route::middleware('permission:subcategory.view')
+        ->get('/subcategories', [SubcategoryController::class, 'index']);
+
+    Route::middleware('permission:subcategory.create')
+        ->post('/subcategories', [SubcategoryController::class, 'store']);
+
+    Route::middleware('permission:subcategory.update')
+        ->put('/subcategories/{subcategory}', [SubcategoryController::class, 'update']);
+
+    Route::middleware('permission:subcategory.delete')
+        ->delete('/subcategories/{subcategory}', [SubcategoryController::class, 'destroy']);
+
+/*
+|--------------------------------------------------------------------------
+| Brand management
+|--------------------------------------------------------------------------
+*/
+
+    Route::middleware('permission:brand.view')
+        ->get('/brands', [BrandController::class, 'index']);
+
+    Route::middleware('permission:brand.create')
+        ->post('/brands', [BrandController::class, 'store']);
+
+    Route::middleware('permission:brand.update')
+        ->put('/brands/{brand}', [BrandController::class, 'update']);
+
+    Route::middleware('permission:brand.delete')
+        ->delete('/brands/{brand}', [BrandController::class, 'destroy']);
+
+
+
 });
