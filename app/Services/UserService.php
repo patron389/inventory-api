@@ -31,14 +31,14 @@ class UserService
         }
 
         // create user
-        $defaultPassword = 'secret123';
+        // $defaultPassword = 'secret123';
         $user = User::create([
             'first_name' => $data['first_name'],
             'last_name'  => $data['last_name'],
             'username'   => $data['username'],
             'email'      => $data['email'],
             'phone_no'   => $data['phone_no'],
-            'password'   => Hash::make($defaultPassword),
+            'password'   => Hash::make($data['password']),
         ]);
 
         // assign role
@@ -88,7 +88,7 @@ class UserService
     public function updateUser(User $actingUser, User $targetUser, array $data): User
     {
         // IT admin cannot modify super admin
-        if ($targetUser->hasRole('super_admin') && !$actingUser->hasRole('super_admin')) {
+        if ($targetUser->hasRole('super_admin') && !empty($data['role'])) {
             throw new AuthorizationException('You cannot modify the Super Admin.');
         }
 

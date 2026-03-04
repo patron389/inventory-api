@@ -21,12 +21,17 @@ class StoreBrandRequest extends FormRequest
      */
     public function rules(): array
     {
-    return [
-        'name' => 'required|string|max:255|unique:brands,name',
-        'is_active' => 'boolean',
+        return [
+            'name' => ['required', 'string', 'max:255'],
 
-        // Validate image upload
-        'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048'
-    ];
+            'is_active' => ['required', 'boolean'],
+
+            'image' => [
+                'nullable',
+                'image', // must be an image file
+                'mimes:jpeg,png,jpg,webp', // allowed formats
+                'max:2048', // max 2MB (in kilobytes)
+            ],
+        ];
     }
 }

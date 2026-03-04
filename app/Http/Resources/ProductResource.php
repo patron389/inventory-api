@@ -19,29 +19,39 @@ class ProductResource extends JsonResource
             'name' => $this->name,
             'sku' => $this->sku,
             'unit' => $this->unit,
-            'price' => $this->price,
-            'description' => $this->description,
+            // raw numeric value (for calculations)
+            'price' => (float) $this->price,
+
+            // formatted value (for UI display)
+            'price_formatted' => '₱ ' . number_format($this->price, 2),
             'is_active' => $this->is_active,
 
-            'category' => [
-                'id' => $this->category?->id,
-                'name' => $this->category?->name,
-            ],
+            'category' => $this->category?->name,
 
-            'subcategory' => [
-                'id' => $this->subcategory?->id,
-                'name' => $this->subcategory?->name,
-            ],
+            'subcategory' => $this->subcategory?->name,
 
-            'brand' => [
-                'id' => $this->brand?->id,
-                'name' => $this->brand?->name,
-                'image' => $this->brand?->image
+            'brand' => $this->brand ? [
+                'name' => $this->brand->name,
+                'image' => $this->brand->image
                     ? asset('storage/' . $this->brand->image)
                     : null,
-            ],
+            ] : null,
+            'brand_image' => $this->brand ? [
+                'name' => $this->brand->name,
+                'image' => $this->brand->image
+                    ? asset('storage/' . $this->brand->image)
+                    : null,
+            ] : null,
 
             'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+            'created_at_formatted' => $this->created_at
+                ? $this->created_at->format('d M Y')
+                : null,
+            'updated_at_formatted' => $this->updated_at
+                ? $this->updated_at->format('d M Y')
+                : null,
+            
         ];
     }
 }

@@ -19,11 +19,15 @@ class BrandController extends Controller
         $this->service = $service;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $brands = $this->service->getAll();
-
-        return BrandResource::collection($brands);
+        $filters = $request->only([
+            'search',
+            'status'
+        ]);
+        return BrandResource::collection(
+            $this->service->getAll($filters)
+        );
     }
 
     public function store(StoreBrandRequest $request)
