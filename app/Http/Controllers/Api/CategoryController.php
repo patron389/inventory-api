@@ -19,10 +19,15 @@ class CategoryController extends Controller
         $this->service = $service;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $categories = $this->service->getAll();
-        return CategoryResource::collection($categories);
+        $filters = $request->only([
+            'search',
+            'status'
+        ]);
+        return CategoryResource::collection(
+            $this->service->getAll($filters)
+        );
     }
 
     public function store(StoreCategoryRequest $request)

@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Models\Category;
-
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 class CategoryService
 {
     /**
@@ -11,9 +11,28 @@ class CategoryService
      * Separated into service for clean controller logic
      * and future extensibility (filters, caching, etc).
      */
-    public function getAll()
+    public function getAll(array $filters = []): LengthAwarePaginator
     {
-        return Category::latest()->paginate(10);
+        $query = Category::query();
+        // 🔎 Search filter (by name only)
+        if (!empty($filters['search'])) {
+            $search = $filters['search'];
+
+            $query->where('name', 'like', "%{$search}%");
+        }
+
+        // Status filter
+        if (!empty($filters['status'])) {
+
+            if ($filters['status'] === 'active') {
+                $query->where('is_active', true);
+            }
+
+            if ($filters['status'] === 'inactive') {
+                $query->where('is_active', false);
+            }
+        }
+        return $query->latest()->paginate(10);
     }
 
     /**

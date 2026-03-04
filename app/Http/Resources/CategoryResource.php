@@ -19,6 +19,13 @@ class CategoryResource extends JsonResource
             'name' => $this->name,
             'is_active' => $this->is_active,
             'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+            'created_at_formatted' => $this->created_at
+                ? $this->created_at->format('d M Y')
+                : null,
+            'updated_at_formatted' => $this->updated_at
+                ? $this->updated_at->format('d M Y')
+                : null,
         ];
     }
 }
