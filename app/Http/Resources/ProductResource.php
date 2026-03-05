@@ -25,7 +25,9 @@ class ProductResource extends JsonResource
             // formatted value (for UI display)
             'price_formatted' => '₱ ' . number_format($this->price, 2),
             'is_active' => $this->is_active,
-
+            // REQUIRED for selects / forms
+            'category_id' => $this->category_id,
+            'brand_id' => $this->brand_id,
             'category' => $this->category?->name,
 
             'subcategory' => $this->subcategory?->name,
@@ -43,6 +45,8 @@ class ProductResource extends JsonResource
                     : null,
             ] : null,
 
+            'description' => $this->description,
+            'created_at' => $this->created_at,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'created_at_formatted' => $this->created_at
