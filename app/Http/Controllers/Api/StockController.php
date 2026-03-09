@@ -38,4 +38,14 @@ class StockController extends Controller
             ], 400);
         }
     }
+
+    public function getStocks(Request $request)
+    {
+        $stocks = $this->service->getStocks([
+            'warehouse_id' => $request->warehouse_id,
+            'search' => $request->search
+        ]);
+
+        return StockResource::collection($stocks);
+    }
 }

@@ -6,6 +6,7 @@ use App\Models\Stock;
 use Illuminate\Support\Facades\DB;
 use App\Models\StockMovement;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class StockService
 {
@@ -73,5 +74,20 @@ class StockService
 
             return $stock->fresh();
         });
+    }
+
+    public function getStocks (array $filters = []) : LengthAwarePaginator
+    {
+        $query = Stock::with([
+            'product.brand',
+            'product.category',
+            'warehouse'
+        ]);
+        // Default warehouse = Main branch (id = 1)
+        $warehouseId = $filters['warehouse_id'] ?? 1;
+
+        $query->where('warehouse_id', $warehouseId);
+
+        return $query->latest()->paginate(10);
     }
 }

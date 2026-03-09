@@ -2,7 +2,7 @@
 
 namespace App\Services;
 use App\Models\Warehouse;
-
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 class WarehouseService
 {
     /**
@@ -12,9 +12,27 @@ class WarehouseService
     {
         //
     }
-    public function getAll()
+    public function getAll(array $filters = []) : LengthAwarePaginator
     {
-        return Warehouse::latest()->paginate();
+        $query = Warehouse::query();
+        // 🔎 Search filter (by name only)
+        if (!empty($filters['search'])) {
+            $search = $filters['search'];
+
+            $query->where('name', 'like', "%{$search}%");
+        }
+        
+        if (!empty($filters['status'])) {
+
+            if ($filters['status'] === 'active') {
+                $query->where('is_active', true);
+            }
+
+            if ($filters['status'] === 'inactive') {
+                $query->where('is_active', false);
+            }
+        }
+        return $query->latest()->paginate(10);
     }
 
     public function create(array $data)

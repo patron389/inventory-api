@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use Illuminate\Http\Request;
 use App\Models\Warehouse;
 use App\Services\WarehouseService;
 use App\Http\Controllers\Controller;
@@ -18,11 +19,16 @@ class WarehouseController extends Controller
         $this->service = $service;
     }
 
-    public function index()
+    public function index(Request $request)
     {
+        $filters = $request->only([
+            'search',
+            'status'
+        ]);
         return WarehouseResource::collection(
-            $this->service->getAll()
+            $this->service->getAll($filters)
         );
+        
     }
 
     public function store(StoreWarehouseRequest $request)

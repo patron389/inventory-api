@@ -16,11 +16,15 @@ class StockResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'warehouse' => $this->warehouse->name,
-            'product' => $this->product->name,
+            'product_id' => $this->product->id,
+            'product_name' => $this->product->name,
             'sku' => $this->product->sku,
+            'brand_name' => $this->product->brand->name,
+            'brand_image' => $this->product->brand && $this->product->brand->image
+                ? asset('storage/' . $this->product->brand->image)
+                : null,
+            'category' => $this->product->category->name,
             'quantity' => $this->quantity,
-            'updated_at' => $this->updated_at,
         ];
     }
 }
