@@ -119,6 +119,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::middleware('permission:stock.transfer')
         ->post('/transfers', [TransferController::class, 'store']);
 
+    Route::middleware('permission:stock.transfer')
+        ->get('/transfers', [TransferController::class, 'index']);
+
     Route::middleware('permission:stock.view')
         ->get('/stock-movements', [StockMovementController::class, 'index']);
 

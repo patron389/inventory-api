@@ -24,8 +24,12 @@ class StoreTransferRequest extends FormRequest
         return [
             'from_warehouse_id' => 'required|exists:warehouses,id',
             'to_warehouse_id'   => 'required|exists:warehouses,id',
-            'product_id'        => 'required|exists:products,id',
-            'quantity'          => 'required|integer|min:1',
+
+            // transfer items
+            'items' => 'required|array|min:1',
+
+            'items.*.product_id' => 'required|exists:products,id',
+            'items.*.quantity'   => 'required|integer|min:1',
         ];
     }
 }

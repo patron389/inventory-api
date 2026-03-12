@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class StockMovementResource extends JsonResource
+class TransferResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,22 +16,21 @@ class StockMovementResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'warehouse' => $this->warehouse->name,
-            'product' => $this->product->name,
-            'sku' => $this->product->sku,
-            'type' => $this->type,
-            'quantity' => $this->quantity,
-            'reference' => $this->reference,
-            'performed_by' => $this->user 
+            'from_warehouse_name' => $this->fromWarehouse?->name,
+            'to_warehouse_name' => $this->toWarehouse?->name,
+            'items_count' => $this->items->count(),
+            'user_name' => $this->user 
                 ? $this->user->first_name . ' ' . $this->user->last_name 
                 : null,
+            'status' => $this->status,
             'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
             'created_at_formatted' => $this->created_at
-                ? $this->created_at->format('d M Y h:i A')
+                ? $this->created_at->format('d M Y')
                 : null,
-            // 'created_time' => $this->created_at
-            //     ? $this->created_at->format('h:i A')
-            //     : null,
+            'updated_at_formatted' => $this->updated_at
+                ? $this->updated_at->format('d M Y')
+                : null,
         ];
     }
 }
