@@ -76,16 +76,27 @@ class StockService
         });
     }
 
-    public function getStocks (array $filters = []) : LengthAwarePaginator
+    public function getStocks(array $filters = []): LengthAwarePaginator
     {
         $query = Stock::with([
             'product.brand',
             'product.category',
             'warehouse'
         ]);
-        // Default warehouse = Main branch (id = 1)
-        $warehouseId = $filters['warehouse_id'] ?? 1;
 
+        // Filter by status
+        if (!empty($filters['status'])) {
+            if ($filters['status'] === 'low') {
+                $query->where('quantity', '<', 10);
+            } elseif ($filters['status'] === 'mid') {
+                $query->whereBetween('quantity', [10, 40]);
+            } elseif ($filters['status'] === 'high') {
+                $query->where('quantity', '>', 40);
+            }
+        }
+
+        // Default warehouse = Main branch (id = 1)
+        $warehouseId = $filters['warehouse_id'] ?? 2;
         $query->where('warehouse_id', $warehouseId);
 
         return $query->latest()->paginate(10);

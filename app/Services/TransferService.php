@@ -105,11 +105,27 @@ class TransferService
                 throw new \Exception('Cannot transfer to the same warehouse.');
             }
 
+            $userId = Auth::id();
+
+            //  Generate next transfer number safely
+            $lastTransfer = Transfer::lockForUpdate()->latest('id')->first();
+
+            $nextNumber = 1;
+
+            if ($lastTransfer && $lastTransfer->transfer_number) {
+                // Extract number from TRF-0001
+                $lastNumber = (int) substr($lastTransfer->transfer_number, 4);
+                $nextNumber = $lastNumber + 1;
+            }
+
+            $transferNumber = 'TRF-' . str_pad($nextNumber, 4, '0', STR_PAD_LEFT);
+
             // Create transfer record (header)
             $transfer = Transfer::create([
+                'transfer_number'   => $transferNumber,
                 'from_warehouse_id' => $data['from_warehouse_id'],
                 'to_warehouse_id'   => $data['to_warehouse_id'],
-                'user_id'           => Auth::id(),
+                'user_id'           => $userId,
                 'status'            => 'completed',
             ]);
 
@@ -159,7 +175,7 @@ class TransferService
                     'user_id'      => Auth::id(),
                     'type'         => 'transfer_out',
                     'quantity'     => $item['quantity'],
-                    'reference'    => $transfer->id,
+                    'reference'    => $transfer->transfer_number,
                 ]);
 
                 // Log movement IN
@@ -169,13 +185,14 @@ class TransferService
                     'user_id'      => Auth::id(),
                     'type'         => 'transfer_in',
                     'quantity'     => $item['quantity'],
-                    'reference'    => $transfer->id,
+                    'reference'    => $transfer->transfer_number,
                 ]);
             }
 
             return $transfer;
         });
     }
+
     public function getTransferMovement(array $filters = []) : LengthAwarePaginator
     {
             $query = Transfer::with([

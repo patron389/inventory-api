@@ -43,7 +43,7 @@ class DashboardService
             ->get();
     }
 
-    public function lowStockReport($threshold = 5)
+    public function lowStockReport($threshold = 10)
     {
         return \DB::table('stocks')
             ->join('warehouses', 'stocks.warehouse_id', '=', 'warehouses.id')

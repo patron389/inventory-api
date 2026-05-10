@@ -10,6 +10,7 @@ class Transfer extends Model
     use HasFactory;
 
     protected $fillable = [
+        'transfer_number',
         'from_warehouse_id',
         'to_warehouse_id',
         'user_id',

@@ -24,7 +24,20 @@ class StockResource extends JsonResource
                 ? asset('storage/' . $this->product->brand->image)
                 : null,
             'category' => $this->product->category->name,
+            'warehouse_id' => $this->warehouse_id,
             'quantity' => $this->quantity,
+            'stock_status' => $this->getStockStatus($this->quantity),
         ];
+    }
+        // helper method
+    private function getStockStatus($qty)
+    {
+        if ($qty < 10) {
+            return 'Low';
+        } elseif ($qty <= 40) {
+            return 'Mid';
+        } else {
+            return 'High';
+        }
     }
 }

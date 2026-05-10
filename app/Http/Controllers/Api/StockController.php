@@ -43,7 +43,8 @@ class StockController extends Controller
     {
         $stocks = $this->service->getStocks([
             'warehouse_id' => $request->warehouse_id,
-            'search' => $request->search
+            'search' => $request->search,
+            'status' => $request->status
         ]);
 
         return StockResource::collection($stocks);

@@ -16,6 +16,7 @@ class TransferResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'transfer_number' => $this->transfer_number,
             'from_warehouse_name' => $this->fromWarehouse?->name,
             'to_warehouse_name' => $this->toWarehouse?->name,
             'items_count' => $this->items->count(),

@@ -24,6 +24,7 @@ class UserResource extends JsonResource
             'is_active' => $this->is_active,
             // Return role names as array
             'roles' => $this->getRoleNames(),
+            'role' => $this->getRoleNames()->first(),
 
             // Return permission names as array
             'permissions' => $this->getAllPermissions()

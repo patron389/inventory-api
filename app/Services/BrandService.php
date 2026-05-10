@@ -44,6 +44,7 @@ class BrandService
         // Order latest and paginate
         return $query->latest()->paginate(10);
     }
+
     // Upload image 
     private function uploadImage(UploadedFile $image): string
     {
@@ -60,6 +61,7 @@ class BrandService
     /**
      * Create new brand.
      */
+    
     public function create(array $data): Brand
     {
         // Handle image upload if exists
