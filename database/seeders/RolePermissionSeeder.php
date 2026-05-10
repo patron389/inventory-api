@@ -51,6 +51,10 @@ class RolePermissionSeeder extends Seeder
             'stock.add',
             'stock.transfer',
             'stock.deduct',
+            'stock.adjust',
+
+            'sale.create',
+            'sale.view',
 
             'user.view',
             'user.create',

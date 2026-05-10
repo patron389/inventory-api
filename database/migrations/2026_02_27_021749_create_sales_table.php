@@ -14,20 +14,46 @@ return new class extends Migration
         Schema::create('sales', function (Blueprint $table) {
             $table->id();
 
-            // Sale belongs to a warehouse (store location)
+            // Receipt / invoice number
+            $table->string('invoice_no')->unique();
+
+            // Warehouse / branch
             $table->foreignId('warehouse_id')
                 ->constrained()
                 ->cascadeOnDelete();
 
-            // Who processed the sale
+            // Cashier / user
             $table->foreignId('user_id')
                 ->constrained()
                 ->cascadeOnDelete();
 
-            // Total computed after items
+            // Amount before discounts/tax
+            $table->decimal('subtotal', 15, 2)->default(0);
+
+            // Discount amount
+            $table->decimal('discount', 15, 2)->default(0);
+
+            // Tax amount
+            $table->decimal('tax', 15, 2)->default(0);
+
+            // Final total
             $table->decimal('total_amount', 15, 2)->default(0);
 
-            $table->string('status')->default('completed');
+            // Cash/payment received
+            $table->decimal('payment_amount', 15, 2)->default(0);
+
+            // Change returned
+            $table->decimal('change_amount', 15, 2)->default(0);
+
+            // Sale status
+            $table->enum('status', [
+                'completed',
+                'cancelled',
+                'refunded'
+            ])->default('completed');
+
+            // Optional remarks
+            $table->text('remarks')->nullable();
 
             $table->timestamps();
         });

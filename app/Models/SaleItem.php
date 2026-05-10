@@ -17,6 +17,19 @@ class SaleItem extends Model
         'subtotal',
     ];
 
+    /*
+    |--------------------------------------------------------------------------
+    | Relationships
+    |--------------------------------------------------------------------------
+    */
+
+    // Sale item belongs to sale
+    public function sale()
+    {
+        return $this->belongsTo(Sale::class);
+    }
+
+    // Sale item belongs to product
     public function product()
     {
         return $this->belongsTo(Product::class);

@@ -14,20 +14,24 @@ return new class extends Migration
         Schema::create('sale_items', function (Blueprint $table) {
             $table->id();
 
-            // Link to sale
+            // Parent sale transaction
             $table->foreignId('sale_id')
                 ->constrained()
                 ->cascadeOnDelete();
 
-            // Product sold
+            // Sold product
             $table->foreignId('product_id')
                 ->constrained()
                 ->cascadeOnDelete();
 
+            // Quantity sold
             $table->integer('quantity');
 
-            $table->decimal('price', 15, 2);      // snapshot of price at sale time
-            $table->decimal('subtotal', 15, 2);   // quantity * price
+            // Product price during sale
+            $table->decimal('price', 15, 2);
+
+            // quantity * price
+            $table->decimal('subtotal', 15, 2);
 
             $table->timestamps();
         });

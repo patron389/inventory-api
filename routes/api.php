@@ -13,6 +13,7 @@ use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\SubcategoryController;
 use App\Http\Controllers\Api\BrandController;
+use App\Http\Controllers\Api\SaleController;
 /*
 |--------------------------------------------------------------------------
 | Public Routes (no login required)
@@ -190,5 +191,18 @@ Route::middleware('auth:sanctum')->group(function () {
         ->delete('/brands/{brand}', [BrandController::class, 'destroy']);
 
 
+/*
+|--------------------------------------------------------------------------
+| Sale management
+|--------------------------------------------------------------------------
+*/
+    Route::middleware('permission:sale.create')
+        ->post('/sales', [SaleController::class, 'store']);
+
+    Route::middleware('permission:sale.view')
+        ->get('/sales', [SaleController::class, 'index']);
+
+    Route::middleware('permission:sale.view')
+        ->get('/sales/{sale}', [SaleController::class, 'show']);
 
 });

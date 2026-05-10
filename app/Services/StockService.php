@@ -96,7 +96,7 @@ class StockService
         }
 
         // Default warehouse = Main branch (id = 1)
-        $warehouseId = $filters['warehouse_id'] ?? 2;
+        $warehouseId = $filters['warehouse_id'] ?? 1;
         $query->where('warehouse_id', $warehouseId);
 
         return $query->latest()->paginate(10);
