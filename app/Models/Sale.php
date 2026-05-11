@@ -22,25 +22,19 @@ class Sale extends Model
         'remarks',
     ];
 
-    /*
-    |--------------------------------------------------------------------------
-    | Relationships
-    |--------------------------------------------------------------------------
-    */
 
-    // Sale belongs to warehouse
     public function warehouse()
     {
         return $this->belongsTo(Warehouse::class);
     }
 
-    // Sale belongs to cashier/user
+
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    // Sale has many sale items
+
     public function items()
     {
         return $this->hasMany(SaleItem::class);

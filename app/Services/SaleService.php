@@ -170,4 +170,44 @@ class SaleService
             ]);
         });
     }
+
+    public function getSales(array $filters)
+    {
+        return Sale::with([
+                'items.product',
+                'warehouse',
+                'user',
+            ])
+
+            // Search by invoice number
+            ->when($filters['search'] ?? null, function ($query, $search) {
+
+                $query->where('invoice_no', 'like', "%{$search}%");
+            })
+
+            // Filter by warehouse
+            ->when($filters['warehouse_id'] ?? null, function ($query, $warehouseId) {
+
+                $query->where('warehouse_id', $warehouseId);
+            })
+
+            // Filter by status
+            ->when($filters['status'] ?? null, function ($query, $status) {
+
+                $query->where('status', $status);
+            })
+
+            ->latest()
+
+            ->paginate(10);
+    }
+
+    public function getSaleById(Sale $sale)
+    {
+        return $sale->load([
+            'items.product',
+            'warehouse',
+            'user',
+        ]);
+    }
 }

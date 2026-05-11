@@ -17,15 +17,18 @@ class SaleResource extends JsonResource
 
             'invoice_no' => $this->invoice_no,
 
-            'warehouse' => [
-                'id' => $this->warehouse?->id,
-                'name' => $this->warehouse?->name,
-            ],
+            // 'warehouse' => [
+            //     'id' => $this->warehouse?->id,
+            //     'name' => $this->warehouse?->name,
+            // ],
+            'warehouse' => $this->warehouse?->name,
+     
 
-            'cashier' => [
-                'id' => $this->user?->id,
-                'name' => $this->user?->first_name . ' ' . $this->user?->last_name,
-            ],
+            // 'cashier' => [
+            //     'id' => $this->user?->id,
+            //     'name' => $this->user?->first_name . ' ' . $this->user?->last_name,
+            // ],
+            'cashier' => $this->user?->first_name . ' ' . $this->user?->last_name,
 
             'subtotal' => $this->subtotal,
 

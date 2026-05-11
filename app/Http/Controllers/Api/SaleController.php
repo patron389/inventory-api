@@ -31,4 +31,24 @@ class SaleController extends Controller
 
         return new SaleResource($sale);
     }
+
+    /**
+     * Sales history
+     */
+    public function index(Request $request)
+    {
+        $sales = $this->saleService->getSales([
+            'search' => $request->search,
+        ]);
+
+        return SaleResource::collection($sales);
+    }
+
+    // Show one transaction details 
+    public function show(Sale $sale)
+    {
+        $sale = $this->saleService->getSaleById($sale);
+
+        return new SaleResource($sale);
+    }
 }
